@@ -21,7 +21,20 @@ def resolve_output_path():
     return "/output/entry.txt"
 
 
+def validate_line(line):
+    """Guard: the entry must be one non-blank line of 1-199 characters."""
+    if "\n" in line or "\r" in line:
+        raise ValueError("entry must be a single line (no embedded newline)")
+    if not line.strip():
+        raise ValueError("entry must not be blank or whitespace-only")
+    if not 1 <= len(line) <= 199:
+        raise ValueError(
+            f"entry must be 1-199 characters, got {len(line)}"
+        )
+
+
 def main():
+    validate_line(LAST_WORDS)
     path = resolve_output_path()
     directory = os.path.dirname(path)
     if directory:
